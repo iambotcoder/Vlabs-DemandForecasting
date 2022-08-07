@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+    <body>
+
+        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+        <script>
+            const xValues = [1, 2, 3, 4, 5, 6];
+            const yValues = [20, 24, 22, 30, 36, 28];
+            let sumOfX, sumOfY, sumOfXY, sumOfXsquare, X, Y, A, B;
+            const n = xValues.length;
+            sumCalc(xValues, yValues);
+            function generateData(i1, i2, step = 1) {
+                X = sumOfX / n;
+                Y = sumOfY / n;
+                b = (sumOfXY - n * X * Y) / (sumOfXsquare - n * X * X)
+                a = Y - b * X;
+                //a b 
+                for (let x = i1; x < i2; x += step) {
+                    yValues.push(a + b * x);
+                    xValues.push(x);
+                }
+                console.log(xValues, yValues);
+            }
+
+            function sumCalc(xValues, yValues) {
+                sumOfX = xValues.reduce((sum, i) => sum + i);
+                sumOfY = yValues.reduce((sum, i) => sum + i);
+                sumOfXY = xValues.map((value, index) => value * yValues[index]).reduce((sum, value) => sum + value);
+                sumOfXsquare = xValues.map((value, index) => value * value).reduce((sum, value) => sum + value);
+
+                // console.log(sumOfXsquare);
+                // console.log(sumOfXY);
+                // console.log(sumOfX);
+            }
+            sumCalc(xValues, yValues);
+            generateData(0 + xValues.length + 1, xValues.length + 5, 1);
+
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        pointRadius: 1,
+                        borderColor: "rgba(0,0,0,0.5)",
+                        data: yValues
+                    }]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: "Demand ForeCasting",
+                        fontSize: 16
+                    }
+                }
+            });
+
+        </script>
+
+    </body>
+
+    </html>
+
+</body>
+
+</html>
